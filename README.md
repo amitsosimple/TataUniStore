@@ -56,4 +56,11 @@ ________________________________________________________________________________
 - Aggregator application can be written to collect the parameters, which can help to verifiy multiple schenario without rebuild.
 - Can use any DB solution to save and reterive the product information. As now we are using file based backhand one can use file-based NoSQL or any SQL solution.
 
-->
+
+## Dependancies
+- Code is verified with go1.12.
+- Code is verified on MacOS.
+- Assuming that user has permission and sufficient space for catalog data file `ProductCatalog.json` at home director of the user.
+- Services are using below ports of the local machine, assumption here is that the ports are free to use for the services.
+  - CatalogService: running on port 8081.
+  - PriceService: running on port 8082.
