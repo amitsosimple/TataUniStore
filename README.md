@@ -41,8 +41,9 @@ ________________________________________________________________________________
 7. Following are the APIs and their responsibilities:
     #### Catalog Server:
      - POST : To Create Product in catalog.
-     - GET : Display All the Products, this display all the details including the price and product.
-             Display Single Product, display Product info with ProductId, only the product info no pricing details
+     - GET : 
+       - Display All the Products, this display all the details including the price and product.
+       - Display Single Product, display Product info with ProductId, only the product info no pricing details.
      - PUT : This is to update the product information.
     #### Pricing Server:
     - POST : Update the Product price for given productId, throw error if product is not in catalog.
