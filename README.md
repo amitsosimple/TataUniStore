@@ -39,14 +39,14 @@ ________________________________________________________________________________
 5. Other APIs are very much for the specific service data.
 6. Top of these server, we have a agreegator service which call the server APIs and display the result on the console.
 7. Following are the APIs and their responsibilities:
-#### Catalog Server:
- - POST : To Create Product in catalog.
- - GET : Display All the Products, this display all the details including the price and product
-            Display Single Product, display Product info with ProductId, only the product info no pricing details
- - PUT : This is to update the product information.
-#### Pricing Server:
-- POST : Update the Product price for given productId, throw error if product is not in catalog.
-- GET : Get the pricing information for the given ProductId.
+    #### Catalog Server:
+     - POST : To Create Product in catalog.
+     - GET : Display All the Products, this display all the details including the price and product.
+             Display Single Product, display Product info with ProductId, only the product info no pricing details
+     - PUT : This is to update the product information.
+    #### Pricing Server:
+    - POST : Update the Product price for given productId, throw error if product is not in catalog.
+    - GET : Get the pricing information for the given ProductId.
 
 8. Error handling, like duplicate productId while creating new, productid check when to udpate the pricing information, diplay APIs check for the productId and availability of the information.
 
