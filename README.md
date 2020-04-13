@@ -31,8 +31,7 @@ Create aggregate API to return product and price details by making calls to abov
 
 _________________________________________________________________________________________________
 
-Solution Strategy:
--
+## Solution Strategy:
 1. Create two services one for ProductCatalog and one for Pricing.
 2. As these services are tightly bound, So the backhand data should be same, this will help maintainability.
 3. For the fast solution, let have a file based data base on local machine. 
@@ -40,30 +39,21 @@ Solution Strategy:
 5. Other APIs are very much for the specific service data.
 6. Top of these server, we have a agreegator service which call the server APIs and display the result on the console.
 7. Following are the APIs and their responsibilities:
-
--> Catalog Server:
-
-  -> POST : To Create Product in catalog.
-  
-  -> GET : Display All the Products, this display all the details including the price and product
+#### Catalog Server:
+ - POST : To Create Product in catalog.
+ - GET : Display All the Products, this display all the details including the price and product
             Display Single Product, display Product info with ProductId, only the product info no pricing details
-            
-  -> PUT : This is to update the product information.
-  
--> Pricing Server:
-
-  -> POST : Update the Product price for given productId, throw error if product is not in catalog.
-  
-  -> GET : Get the pricing information for the given ProductId.
+ - PUT : This is to update the product information.
+#### Pricing Server:
+- POST : Update the Product price for given productId, throw error if product is not in catalog.
+- GET : Get the pricing information for the given ProductId.
 
 8. Error handling, like duplicate productId while creating new, productid check when to udpate the pricing information, diplay APIs check for the productId and availability of the information.
 
 9. There are a sequence of calls with the application service, one can change them for the verification. This will require the build and run the application code.
 
-Future enhancements:
--
--> Aggregator application can be written to collect the parameters, which can help to verifiy multiple schenario without rebuild.
-
--> Can use any DB solution to save and reterive the product information. As now we are using file based backhand one can use file-based NoSQL or any SQL solution.
+## Future enhancements:
+- Aggregator application can be written to collect the parameters, which can help to verifiy multiple schenario without rebuild.
+- Can use any DB solution to save and reterive the product information. As now we are using file based backhand one can use file-based NoSQL or any SQL solution.
 
 ->
