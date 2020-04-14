@@ -14,7 +14,7 @@ import (
 
 func printResponse(resp *http.Response, err error) {
 	if err != nil {
-		u.ErrorLogger.Println("The HTTP request failed with error %s\n", err)
+		u.ErrorLogger.Printf("The HTTP request failed with error %s\n", err)
 	} else {
 		data, _ := ioutil.ReadAll(resp.Body)
 
@@ -95,7 +95,7 @@ func UpdateProductInfoByProductId(id int){
 	req.Header.Set("Content-Type", "application/json")
 	resp, err := client.Do(req)
 	if err != nil {
-		u.ErrorLogger.Println("PANIC with err=%s", err)
+		u.ErrorLogger.Printf("PANIC with err=%s", err)
 		panic(err)
 	}
 	printResponse(resp, err)

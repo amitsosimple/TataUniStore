@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"time"
 
-	"../../../productutil"
 	"../../../productutil/config"
 	u "../../../productutil/log"
 	serviceconfig "../config"
@@ -118,7 +117,7 @@ func UpdateProduct(w http.ResponseWriter, r *http.Request) {
 	}
 	json.Unmarshal(reqBody, &updatedProduct)
 
-	for i, singleProduct := range productutil.Products {
+	for i, singleProduct := range products {
 		if singleProduct.Product_id == productID {
 			if  singleProduct.Product_id != updatedProduct.Product_id {
 				u.ErrorLogger.Printf("Data Mismatched, Query param and body data is not match, Param Id=%s where the Payload Id=%s\n", productID, updatedProduct.Product_id)

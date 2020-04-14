@@ -39,7 +39,7 @@ func CreateProductPrice(w http.ResponseWriter, r *http.Request) {
 	for i, singleProduct := range products {
 		if singleProduct.Product_id == productID {
 			if singleProduct.Price != nil {
-				u.GeneralLogger.Println("Product id = %s, already have price information", productID)
+				u.GeneralLogger.Printf("Product id = %s, already have price information", productID)
 				w.WriteHeader(http.StatusBadRequest)
 				fmt.Fprintf(w, "Product id = %s, already have price information", productID)
 				return
@@ -85,7 +85,7 @@ func GetProductPrice(w http.ResponseWriter, r *http.Request) {
 		if singleProduct.Product_id == productID {
 
 			if singleProduct.Price == nil {
-				u.ErrorLogger.Println("Price for the ProductId=%s is not available", productID)
+				u.ErrorLogger.Printf("Price for the ProductId=%s is not available", productID)
 				w.WriteHeader(http.StatusBadRequest)
 				fmt.Fprintf(w, "Price for the ProductId=%s is not available", productID)
 				return
@@ -101,7 +101,7 @@ func GetProductPrice(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	u.ErrorLogger.Println("The product with ID %v is not available for modification", productID)
+	u.ErrorLogger.Printf("The product with ID %v is not available for modification", productID)
 	w.WriteHeader(http.StatusBadRequest)
 	fmt.Fprintf(w, "The product with ID %v is not available for modification", productID)
 }

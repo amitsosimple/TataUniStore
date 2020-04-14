@@ -21,3 +21,7 @@ func GetProductList() []config.Product {
 func UpdateCatalogInfo(products []config.Product) error {
 	return sdkClient.UpdateCatalog(products)
 }
+
+func GetProductFileName() string {
+	return sdkClient.GetProductFile()
+}
