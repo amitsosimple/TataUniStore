@@ -32,15 +32,15 @@ Create aggregate API to return product and price details by making calls to abov
 _________________________________________________________________________________________________
 
 ## Solution Strategy:
-1. Create two services one for ProductCatalog and one for Pricing.
-2. As these services are tightly bound, So the backhand data should be same, this will help maintainability.
-3. For the fast solution, let have a file based data base on local machine. 
+1. Create two services one for ProductCatalog and one for ProductPrice.
+2. As these services are tightly bound, so the backhand data should be same, this will help maintain the integrity of the data.
+3. For the faster solution, I choose a file based database on local machine.  In simple term, have a file to content all the product information. This file content the Product infomrtion json in array form.
 4. As the problem statement tells we have one production display method, I am assuming that this will display all the information of the products, which include the complete catalog with the pricing information.
-5. Other APIs are very much for the specific service data.
-6. Top of these server, we have a agreegator service which call the server APIs and display the result on the console.
+5. Other APIs are very much for the specific service data ie ProductCatalog to display/update/create information for catalog data only and ProductPrice for Price Creation/Display.
+6. Top of these server, we have a agreegator service which call the server APIs and display the result.
 7. Following are the APIs and their responsibilities:
     #### Catalog Server:
-     - POST : To Create Product in catalog.
+     - POST : To Create Product information in catalog.
      - GET : 
        - Display All the Products, this display all the details including the price and product.
        - Display Single Product, display Product info with ProductId, only the product info no pricing details.
@@ -56,14 +56,20 @@ ________________________________________________________________________________
 ## Future enhancements:
 - Aggregator application can be written to collect the parameters, which can help to verifiy multiple schenario without rebuild.
 - Can use any DB solution to save and reterive the product information. As now we are using file based backhand one can use file-based NoSQL or any SQL solution.
-
+- Logging can be further enhance to choose a specific logging for the environment. A simple flag/env-var can help here.
 
 ## Dependancies
 - Code is verified with go1.12.
 - Code is verified on MacOS.
 - Using mux for the http server, To install please run commond `go get -u github.com/gorilla/mux`
-- For logging we are using our custom logger. And logs are generated at `{user.Home}/ProductionCatalog/general-log.log`
-- Assuming that user has permission and sufficient space for catalog data file `ProductCatalog.json` at home director of the user.
+- For logging I have a custom logger. And logs are generated at `{user.Home}/ProductionCatalog/general-log.log`
+- Assuming that user has permission and sufficient space for catalog data file `ProductCatalog.json` and log file at home director of the user.
 - Services are using below ports of the local machine, assumption here is that the ports are free to use for the services.
   - CatalogService: running on port 8081.
   - PriceService: running on port 8082.
+
+## How to run
+
+## How to test
+
+
