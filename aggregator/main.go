@@ -4,10 +4,13 @@ package main
 
 import (
 	"fmt"
+
+	u "../productutil/log"
 )
 
 func testAggregator() {
-	fmt.Println("Starting the application...")
+	defer u.Exit(u.Enter())
+	u.GeneralLogger.Println("Starting the application...")
 	ReturnProductInfoByProductId(2)
 	fmt.Println()
 	GetPriceInfoByProductId(2)
