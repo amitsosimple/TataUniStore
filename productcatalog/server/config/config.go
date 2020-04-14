@@ -4,6 +4,7 @@ package config
 
 import (
 	"../../../productutil/config"
+	u "../../../productutil/log"
 	"../../../productutil/sdk"
 )
 
@@ -44,6 +45,7 @@ func GetProductFileName() string {
 }
 
 func TranslateToProductInfo(singleProduct config.Product) ProductInfo{
+	defer u.Exit(u.Enter())
 	var productInfo ProductInfo
 
 	productInfo.Product_id = singleProduct.Product_id
@@ -65,6 +67,7 @@ func TranslateToProductInfo(singleProduct config.Product) ProductInfo{
 }
 
 func TranslateToProduct(singleProduct ProductInfo) config.Product{
+	defer u.Exit(u.Enter())
 	var productInfo config.Product
 
 	productInfo.Product_id = singleProduct.Product_id

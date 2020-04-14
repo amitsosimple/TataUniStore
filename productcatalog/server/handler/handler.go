@@ -10,14 +10,17 @@ import (
 
 	"../../../productutil"
 	"../../../productutil/config"
+	u "../../../productutil/log"
 	serviceconfig "../config"
 )
 
 func CreateProduct(w http.ResponseWriter, r *http.Request) {
+	defer u.Exit(u.Enter())
 	var newProduct serviceconfig.ProductInfo
 	reqBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
+		u.ErrorLogger.Println("Bad Request for Product Creation")
 		fmt.Fprintf(w, "Bad Request for Product Creation")
 		return
 	}
@@ -26,6 +29,7 @@ func CreateProduct(w http.ResponseWriter, r *http.Request) {
 
 	if len(newProduct.Product_id) == 0 {
 		w.WriteHeader(http.StatusBadRequest)
+		u.ErrorLogger.Println("Bad Request for Product Creation, Please provide Product_Id")
 		fmt.Fprintf(w, "Bad Request for Product Creation, Please provide Product_Id")
 		return
 	}
@@ -35,6 +39,7 @@ func CreateProduct(w http.ResponseWriter, r *http.Request) {
 	for _, singleProduct := range products {
 		if singleProduct.Product_id == newProduct.Product_id {
 			w.WriteHeader(http.StatusBadRequest)
+			u.ErrorLogger.Printf("Bad Request for Product Creation, Product with Product_Id=%s is already present\n", newProduct.Product_id)
 			fmt.Fprintf(w, "Bad Request for Product Creation, Product with Product_Id=%s is already present", newProduct.Product_id)
 			return
 		}
@@ -48,45 +53,55 @@ func CreateProduct(w http.ResponseWriter, r *http.Request) {
 
 	error := serviceconfig.UpdateCatalogInfo(products)
 	if error != nil {
+		u.ErrorLogger.Println("Information update failure, Please retry the operation and make sure you have proper permission")
 		fmt.Fprintf(w, "Information update failure, Please retry the operation and make sure you have proper permission")
 		return
 	}
+	u.GeneralLogger.Printf("Product Creation successful with ProductId=%s", newProduct.Product_id)
 
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(products)
 }
 
 func GetOneProduct(w http.ResponseWriter, r *http.Request) {
+	defer u.Exit(u.Enter())
 	productID := mux.Vars(r)["id"]
 
 	products := serviceconfig.GetProductList()
 
 	for _, singleProduct := range products {
 		if singleProduct.Product_id == productID {
+			u.GeneralLogger.Printf("Successfully fetched and displyed the catalog information of productID=%s\n", productID)
 			w.WriteHeader(http.StatusOK)
 			json.NewEncoder(w).Encode(serviceconfig.TranslateToProductInfo(singleProduct))
 			return
 		}
 	}
+	u.ErrorLogger.Printf("The product with ID %v is not available to display\n", productID)
 	w.WriteHeader(http.StatusOK)
 	fmt.Fprintf(w, "The product with ID %v is not available to display", productID)
 }
 
 func GetAllProducts(w http.ResponseWriter, r *http.Request) {
+	defer u.Exit(u.Enter())
 	products := serviceconfig.GetProductList()
 
 	if(len(products) == 0) {
+		u.GeneralLogger.Println("Product catalog is empty, No Product to display")
 		fmt.Fprint(w, "Product catalog is empty, No Product to display")
 		return
 	}
 
+	u.GeneralLogger.Println("Product List displayed successfully")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(products)
 }
 
 func UpdateProduct(w http.ResponseWriter, r *http.Request) {
+	defer u.Exit(u.Enter())
 	products := serviceconfig.GetProductList()
 	if len(products) == 0 {
+		u.GeneralLogger.Println("Product catalog is empty, No Product to display")
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprint(w, "Product catalog is empty, No Product to Update")
 		return
@@ -97,6 +112,7 @@ func UpdateProduct(w http.ResponseWriter, r *http.Request) {
 
 	reqBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
+		u.GeneralLogger.Println("Kindly enter fields information to update")
 		fmt.Fprintf(w, "Kindly enter fields information to update")
 		return
 	}
@@ -105,6 +121,7 @@ func UpdateProduct(w http.ResponseWriter, r *http.Request) {
 	for i, singleProduct := range productutil.Products {
 		if singleProduct.Product_id == productID {
 			if  singleProduct.Product_id != updatedProduct.Product_id {
+				u.ErrorLogger.Printf("Data Mismatched, Query param and body data is not match, Param Id=%s where the Payload Id=%s\n", productID, updatedProduct.Product_id)
 				w.WriteHeader(http.StatusConflict)
 				fmt.Fprintf(w,"Data Mismatched, Query param and body data is not match, Param Id=%s where the Payload Id=%s", productID, updatedProduct.Product_id)
 				return

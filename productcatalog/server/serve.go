@@ -8,14 +8,17 @@ import (
 	"log"
 	"net/http"
 
+	u "../../productutil/log"
 	"./handler"
 )
 
 func homeLink(w http.ResponseWriter, r *http.Request) {
+	u.GeneralLogger.Println("HomePage of service ProductionCatalog Server hit")
 	fmt.Fprintf(w, "Welcome home!")
 }
 
 func Serve() {
+	defer u.Exit(u.Enter())
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/", homeLink)
 	router.HandleFunc("/product", handler.CreateProduct).Methods("POST")
