@@ -61,6 +61,8 @@ ________________________________________________________________________________
 ## Dependancies
 - Code is verified with go1.12.
 - Code is verified on MacOS.
+- Using mux for the http server, To install please run commond `go get -u github.com/gorilla/mux`
+- For logging we are using our custom logger. And logs are generated at `{user.Home}/ProductionCatalog/general-log.log`
 - Assuming that user has permission and sufficient space for catalog data file `ProductCatalog.json` at home director of the user.
 - Services are using below ports of the local machine, assumption here is that the ports are free to use for the services.
   - CatalogService: running on port 8081.
