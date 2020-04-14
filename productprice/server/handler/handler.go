@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"../../../productutil/config"
+	u "../../../productutil/log"
 	serviceconfig "../config"
 )
 
@@ -20,11 +21,13 @@ type productPrice struct {
 }
 
 func CreateProductPrice(w http.ResponseWriter, r *http.Request) {
+	defer u.Exit(u.Enter())
 	productID := mux.Vars(r)["id"]
 	var price config.Price
 
 	reqBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
+		u.ErrorLogger.Println("Kindly enter fields information to update")
 		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, "Kindly enter fields information to update")
 		return
@@ -36,6 +39,7 @@ func CreateProductPrice(w http.ResponseWriter, r *http.Request) {
 	for i, singleProduct := range products {
 		if singleProduct.Product_id == productID {
 			if singleProduct.Price != nil {
+				u.GeneralLogger.Println("Product id = %s, already have price information", productID)
 				w.WriteHeader(http.StatusBadRequest)
 				fmt.Fprintf(w, "Product id = %s, already have price information", productID)
 				return
@@ -58,6 +62,7 @@ func CreateProductPrice(w http.ResponseWriter, r *http.Request) {
 
 			error := serviceconfig.UpdateCatalogInfo(products)
 			if error != nil {
+				u.ErrorLogger.Println("Information update failure, Please retry the operation and make sure you have proper permission")
 				w.WriteHeader(http.StatusInternalServerError)
 				fmt.Fprintf(w, "Information update failure, Please retry the operation and make sure you have proper permission")
 				return
@@ -71,6 +76,7 @@ func CreateProductPrice(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetProductPrice(w http.ResponseWriter, r *http.Request) {
+	defer u.Exit(u.Enter())
 	productID := mux.Vars(r)["id"]
 
 	products := serviceconfig.GetProductList()
@@ -79,6 +85,7 @@ func GetProductPrice(w http.ResponseWriter, r *http.Request) {
 		if singleProduct.Product_id == productID {
 
 			if singleProduct.Price == nil {
+				u.ErrorLogger.Println("Price for the ProductId=%s is not available", productID)
 				w.WriteHeader(http.StatusBadRequest)
 				fmt.Fprintf(w, "Price for the ProductId=%s is not available", productID)
 				return
@@ -94,6 +101,7 @@ func GetProductPrice(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
+	u.ErrorLogger.Println("The product with ID %v is not available for modification", productID)
 	w.WriteHeader(http.StatusBadRequest)
 	fmt.Fprintf(w, "The product with ID %v is not available for modification", productID)
 }
